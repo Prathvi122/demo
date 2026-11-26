@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The scilent pattern | Artisan Cafe &amp; Kitchen</title>
+
+  <!-- Google Fonts: Cormorant Garamond, Playfair Display & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500;1,600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sage: {
+              50: '#F4F7F4',
+              100: '#E5ECE6',
+              200: '#CBD9CD',
+              300: '#A3B18A',
+              400: '#8DA192',
+              500: '#7C9082',
+              600: '#5F7464',
+              700: '#495B4E',
+              800: '#39473D',
+              900: '#2B362E',
+            },
+            cream: {
+              50: '#FAF9F6',
+              100: '#F4F1EA',
+              200: '#E8E2D5',
+              300: '#D8CEBC',
+            },
+            charcoal: '#2B302C',
+            terracotta: '#C86D51',
+            gold: '#D4A359',
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', '"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* Base Palette & Smooth Scrolling */
+    body {
+      background-color: #FAF9F6;
+      color: #2B302C;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Subtle Organic Grain Overlay */
+    .bg-grain {
+      background-image: radial-gradient(rgba(95, 116, 100, 0.085) 1px, transparent 0);
+      background-size: 24px 24px;
+    }
+
+    /* Boutique Glassmorphism Card */
+    .glass-sage {
+      background: rgba(250, 249, 246, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    /* Shimmer Highlight Effect for Primary CTAs */
+    .btn-shimmer {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-shimmer::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.24), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.65s ease;
+    }
+    .btn-shimmer:hover::after {
+      left: 140%;
+    }
+
+    /* Floating Botanical & Culinary Animations */
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-14px) rotate(4deg); }
+    }
+    @keyframes floatReverse {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(12px) rotate(-4deg); }
+    }
+    @keyframes pulseRing {
+      0% { transform: scale(0.95); opacity: 0.7; }
+      70% { transform: scale(1.12); opacity: 0; }
+      100% { transform: scale(0.95); opacity: 0; }
+    }
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.6) translateY(8px); }
+      70% { opacity: 1; transform: scale(1.06) translateY(-2px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes steamRise {
+      0% { transform: translateY(0) scaleX(1); opacity: 0.65; }
+      50% { transform: translateY(-10px) scaleX(1.1); opacity: 0.35; }
+      100% { transform: translateY(-22px) scaleX(0.9); opacity: 0; }
+    }
+    @keyframes scanLine {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(152px); }
+    }
+
+    .animate-float-slow {
+      animation: floatSlow 6s ease-in-out infinite;
+    }
+    .animate-float-reverse {
+      animation: floatReverse 7s ease-in-out infinite;
+    }
+    .animate-pop-in {
+      animation: popIn 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .animate-steam {
+      animation: steamRise 3s ease-in-out infinite;
+    }
+    .animate-scan {
+      animation: scanLine 2.8s ease-in-out infinite;
+    }
+
+    /* IntersectionObserver Scroll Reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Tactile Micro-interactions */
+    .btn-tactile {
+      transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+    }
+    .btn-tactile:hover {
+      transform: translateY(-2px);
+    }
+    .btn-tactile:active {
+      transform: scale(0.97) translateY(0px);
+    }
+
+    /* Interactive Table Floor Plan Hover */
+    .cafe-table {
+      transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .cafe-table:not(.occupied):hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 24px -8px rgba(95, 116, 100, 0.28);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F4F1EA;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #A3B18A;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #5F7464;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-sage-300 selection:text-charcoal">
+
+  <!-- ==================== STICKY NAVIGATION ==================== -->
+  <header id="navbar" class="fixed top-0 inset-x-0 z-40 transition-all duration-300 bg-cream-50/85 backdrop-blur-md border-b border-sage-200/70">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between">
+      <!-- Brand Logo -->
+      <a href="#hero" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-2xl bg-sage-600 text-cream-50 flex items-center justify-center shadow-sm group-hover:bg-sage-700 transition-colors">
+          <!-- Botanical Leaf & Geometric Pattern SVG -->
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
+            <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+          </svg>
+        </div>
+        <div>
+          <span class="font-serif text-xl sm:text-2xl font-bold tracking-tight text-charcoal block leading-none">The scilent pattern</span>
+          <span class="text-[10px] sm:text-[11px] uppercase tracking-[0.18em] text-sage-600 font-semibold mt-0.5 block">Artisan Cafe &amp; Kitchen</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-charcoal/80">
+        <a href="#hero" class="hover:text-sage-600 transition-colors">Intro</a>
+        <a href="#menu-customizer" class="hover:text-sage-600 transition-colors">Craft Your Plate</a>
+        <a href="#reservations" class="hover:text-sage-600 transition-colors">Reserve a Table</a>
+        <a href="#cafe-qr" class="hover:text-sage-600 transition-colors">Cafe Pass &amp; QR</a>
+      </nav>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <a href="#reservations" class="hidden sm:inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold text-sage-700 bg-sage-100 hover:bg-sage-200/80 transition-colors btn-tactile">
+          Book Table
+        </a>
+
+        <!-- Cart Drawer Trigger -->
+        <button id="open-cart-btn" type="button" aria-label="Open Table Order Cart" class="relative inline-flex items-center gap-2 px-3.5 sm:px-4 py-2.5 rounded-full bg-sage-600 text-cream-50 text-sm font-semibold shadow-md shadow-sage-600/20 hover:bg-sage-700 btn-tactile btn-shimmer">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+            <path d="M3 6h18" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
+          </svg>
+          <span class="hidden sm:inline">Table Order</span>
+          <span id="cart-badge" class="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 text-xs font-bold rounded-full bg-terracotta text-white">1</span>
+        </button>
+
+        <!-- Mobile Menu Toggle -->
+        <button id="mobile-menu-btn" type="button" aria-label="Toggle Navigation Menu" class="md:hidden w-10 h-10 rounded-full bg-cream-100 border border-sage-200 flex items-center justify-center text-charcoal hover:bg-sage-100">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 7h16" /><path d="M4 12h16" /><path d="M4 17h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Collapsible Mobile Nav Drawer -->
+    <div id="mobile-nav-panel" class="hidden md:hidden bg-cream-50/95 backdrop-blur-md border-b border-sage-200 px-4 pt-2 pb-5 space-y-2">
+      <a href="#hero" class="mobile-nav-link block px-4 py-2.5 rounded-xl text-sm font-semibold text-charcoal hover:bg-sage-100">Intro &amp; Story</a>
+      <a href="#menu-customizer" class="mobile-nav-link block px-4 py-2.5 rounded-xl text-sm font-semibold text-charcoal hover:bg-sage-100">Craft Your Dish (Menu)</a>
+      <a href="#reservations" class="mobile-nav-link block px-4 py-2.5 rounded-xl text-sm font-semibold text-charcoal hover:bg-sage-100">Reserve a Table</a>
+      <a href="#cafe-qr" class="mobile-nav-link block px-4 py-2.5 rounded-xl text-sm font-semibold text-charcoal hover:bg-sage-100">Cafe Pass &amp; QR Code</a>
+    </div>
+  </header>
+
+  <!-- ==================== 1. HERO / INTRO SECTION ==================== -->
+  <section id="hero" class="relative min-h-screen pt-28 pb-20 flex flex-col justify-between bg-cream-50 bg-grain overflow-hidden">
+    <!-- Decorative Soft Sage Blobs & Botanical Line Art Watermark -->
+    <div class="pointer-events-none absolute -top-24 -right-24 w-96 h-96 rounded-full bg-sage-300/25 blur-3xl"></div>
+    <div class="pointer-events-none absolute bottom-10 -left-24 w-80 h-80 rounded-full bg-sage-500/15 blur-3xl"></div>
+    <svg class="pointer-events-none absolute right-0 top-24 w-[460px] h-[460px] text-sage-500/[0.06]" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="1">
+      <circle cx="100" cy="100" r="85" stroke-dasharray="4 6" />
+      <circle cx="100" cy="100" r="62" />
+      <path d="M100 15C118 52 118 148 100 185C82 148 82 52 100 15Z" />
+      <path d="M15 100C52 82 148 82 185 100C148 118 52 118 15 100Z" />
+    </svg>
+
+    <!-- Floating Botanical & Culinary Accent Badges -->
+    <div class="hidden lg:flex items-center gap-2.5 px-4 py-2.5 rounded-2xl glass-sage border border-sage-200 shadow-lg shadow-sage-900/5 absolute top-36 left-12 animate-float-slow">
+      <span class="text-xl">🌿</span>
+      <div>
+        <p class="text-xs font-bold text-charcoal">Garden-Fresh Herbs</p>
+        <p class="text-[11px] text-sage-600">Hand-picked sage &amp; sweet basil</p>
+      </div>
+    </div>
+
+    <div class="hidden lg:flex items-center gap-2.5 px-4 py-2.5 rounded-2xl glass-sage border border-sage-200 shadow-lg shadow-sage-900/5 absolute bottom-36 right-12 animate-float-reverse">
+      <span class="text-xl">☕</span>
+      <div>
+        <p class="text-xs font-bold text-charcoal">Chikmagalur Single-Origin</p>
+        <p class="text-[11px] text-sage-600">Custom milk &amp; botanical syrups</p>
+      </div>
+    </div>
+
+    <!-- Main Hero Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-auto grid lg:grid-cols-12 gap-12 items-center relative z-10">
+      <!-- Left Copy -->
+      <div class="lg:col-span-7 text-center lg:text-left space-y-6">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sage-100/90 border border-sage-200 text-sage-700 text-xs font-semibold tracking-wide uppercase">
+          <span class="w-2 h-2 rounded-full bg-sage-600 animate-pulse"></span>
+          The scilent pattern • Open 8:00 AM – 11:00 PM
+        </div>
+
+        <h1 class="font-serif text-4xl sm:text-6xl lg:text-[4.25rem] font-bold text-charcoal leading-[1.06] tracking-tight">
+          Where Quiet Moments Meet <span class="italic text-sage-600 font-medium">Artisanal Craft.</span>
+        </h1>
+
+        <p class="text-base sm:text-lg text-charcoal/75 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+          Step into <strong class="font-semibold text-charcoal">The scilent pattern</strong> — a serene botanical cafe and open kitchen where every plate follows your rhythm. Layer fresh toppings on wood-fired sourdough pizza, stack gourmet brioche burgers, swirl single-origin coffees, or toss hand-rolled pasta in real time.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+          <a href="#menu-customizer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-2xl bg-sage-600 text-cream-50 font-semibold text-base shadow-lg shadow-sage-600/25 hover:bg-sage-700 btn-tactile btn-shimmer">
+            <span>Customize Your Plate</span>
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+            </svg>
+          </a>
+          <a href="#reservations" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-2xl bg-cream-100 text-charcoal border border-sage-200 font-semibold text-base hover:bg-sage-100/80 btn-tactile">
+            <span>Reserve a Table</span>
+          </a>
+        </div>
+
+        <!-- Highlights Strip -->
+        <div class="pt-6 grid grid-cols-3 gap-4 max-w-lg mx-auto lg:mx-0 border-t border-sage-200/70">
+          <div>
+            <p class="font-serif text-2xl sm:text-3xl font-bold text-sage-700">24+</p>
+            <p class="text-xs text-charcoal/65">Artisan Toppings &amp; Add-ons</p>
+          </div>
+          <div>
+            <p class="font-serif text-2xl sm:text-3xl font-bold text-sage-700">48 hr</p>
+            <p class="text-xs text-charcoal/65">Wild Sourdough Ferment</p>
+          </div>
+          <div>
+            <p class="font-serif text-2xl sm:text-3xl font-bold text-sage-700">4.9 ★</p>
+            <p class="text-xs text-charcoal/65">Guest Favorite Kitchen</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Visual: Artisan Plate Collage SVG Illustration -->
+      <div class="lg:col-span-5 flex justify-center">
+        <div class="relative w-full max-w-md aspect-square rounded-[2.5rem] bg-gradient-to-br from-sage-100 via-cream-100 to-sage-200/70 p-6 sm:p-8 border border-sage-200 shadow-2xl shadow-sage-900/10 flex items-center justify-center">
+          <svg class="w-full h-full drop-shadow-md" viewBox="0 0 400 400" fill="none">
+            <!-- Soft Botanical Wreath Circle -->
+            <circle cx="200" cy="200" r="176" stroke="#7C9082" stroke-width="1.5" stroke-dasharray="6 8" opacity="0.55" />
+            <circle cx="200" cy="200" r="146" fill="#FAF9F6" stroke="#E8E2D5" stroke-width="4" />
+
+            <!-- Sage Leaves on Rim -->
+            <g transform="translate(65, 95) rotate(-35)">
+              <path d="M0 24C0 10 14 0 28 0C28 14 18 24 0 24Z" fill="#7C9082" />
+              <path d="M4 20L22 6" stroke="#FAF9F6" stroke-width="1.5" stroke-linecap="round" />
+            </g>
+            <g transform="translate(310, 275) rotate(140)">
+              <path d="M0 26C0 11 15 0 30 0C30 15 19 26 0 26Z" fill="#A3B18A" />
+              <path d="M4 22L24 6" stroke="#FAF9F6" stroke-width="1.5" stroke-linecap="round" />
+            </g>
+
+            <!-- Artisan Pizza Centerpiece -->
+            <circle cx="200" cy="200" r="112" fill="#E6C38E" />
+            <circle cx="200" cy="200" r="96" fill="#C86D51" />
+            <circle cx="200" cy="200" r="88" fill="#F6E8C8" />
+
+            <!-- Melted Mozzarella Pools -->
+            <circle cx="172" cy="175" r="22" fill="#FFFDF9" />
+            <circle cx="228" cy="182" r="24" fill="#FFFDF9" />
+            <circle cx="195" cy="228" r="25" fill="#FFFDF9" />
+            <circle cx="164" cy="215" r="16" fill="#FFFDF9" />
+            <circle cx="232" cy="220" r="17" fill="#FFFDF9" />
+
+            <!-- Roasted Cherry Tomatoes -->
+            <circle cx="176" cy="168" r="9" fill="#D94E34" />
+            <circle cx="174" cy="166" r="2.5" fill="#F9A89B" />
+            <circle cx="234" cy="216" r="9" fill="#D94E34" />
+            <circle cx="232" cy="214" r="2.5" fill="#F9A89B" />
+            <circle cx="188" cy="236" r="8.5" fill="#D94E34" />
+
+            <!-- Fresh Basil & Sage Leaves -->
+            <path d="M214 166C222 158 236 162 238 172C228 176 218 174 214 166Z" fill="#5F7464" />
+            <path d="M158 206C150 198 156 184 166 184C170 194 166 202 158 206Z" fill="#5F7464" />
+            <path d="M204 206C212 200 222 206 220 216C210 218 204 212 204 206Z" fill="#7C9082" />
+
+            <!-- Black Olives -->
+            <circle cx="202" cy="188" r="6" stroke="#2B302C" stroke-width="3.5" fill="none" />
+            <circle cx="174" cy="224" r="5.5" stroke="#2B302C" stroke-width="3.5" fill="none" />
+          </svg>
+
+          <!-- Interactive Mini Badge Overlay -->
+          <a href="#menu-customizer" class="absolute -bottom-4 bg-charcoal text-cream-50 px-5 py-2.5 rounded-full text-xs font-semibold shadow-xl flex items-center gap-2 hover:bg-sage-700 transition-colors">
+            <span class="w-2 h-2 rounded-full bg-gold"></span>
+            Tap to Edit Toppings Live ↓
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Smooth Scroll-Down Indicator -->
+    <div class="pt-10 flex justify-center">
+      <a href="#menu-customizer" class="group flex flex-col items-center gap-1.5 text-sage-700 hover:text-charcoal transition-colors">
+        <span class="text-[11px] uppercase tracking-[0.22em] font-semibold">Scroll to Menu</span>
+        <div class="w-6 h-10 rounded-full border-2 border-sage-400 flex justify-center p-1.5">
+          <div class="w-1.5 h-2.5 rounded-full bg-sage-600 animate-bounce"></div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ==================== 2. INTERACTIVE CAFE MENU & LIVE TOPPING CUSTOMIZER ==================== -->
+  <section id="menu-customizer" class="py-20 sm:py-28 bg-cream-100/75 border-y border-sage-200/70">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section Header -->
+      <div class="text-center max-w-2xl mx-auto mb-12 reveal">
+        <span class="text-xs font-bold uppercase tracking-[0.2em] text-sage-600">The scilent pattern • Kitchen Studio</span>
+        <h2 class="font-serif text-3xl sm:text-5xl font-bold text-charcoal mt-2">Customize Your Plate &amp; Cup</h2>
+        <p class="text-charcoal/70 mt-3 text-sm sm:text-base">
+          Choose a category, pick your signature base, and tap fresh toppings to watch your dish transform in real time before sending it to your table.
+        </p>
+      </div>
+
+      <!-- Category Tabs: Pizza, Burgers, Coffee, Pasta -->
+      <div class="flex flex-wrap justify-center gap-2.5 sm:gap-4 mb-10 reveal" role="tablist" aria-label="Menu Categories">
+        <button type="button" data-category="pizza" class="category-tab active flex items-center gap-2.5 px-5 sm:px-6 py-3 rounded-2xl text-sm font-semibold transition-all btn-tactile bg-sage-600 text-cream-50 shadow-md shadow-sage-600/20">
+          <span class="text-lg">🍕</span>
+          <span>Artisan Pizza</span>
+        </button>
+        <button type="button" data-category="burger" class="category-tab flex items-center gap-2.5 px-5 sm:px-6 py-3 rounded-2xl text-sm font-semibold transition-all btn-tactile bg-cream-50 text-charcoal border border-sage-200 hover:bg-sage-100">
+          <span class="text-lg">🍔</span>
+          <span>Brioche Burgers</span>
+        </button>
+        <button type="button" data-category="coffee" class="category-tab flex items-center gap-2.5 px-5 sm:px-6 py-3 rounded-2xl text-sm font-semibold transition-all btn-tactile bg-cream-50 text-charcoal border border-sage-200 hover:bg-sage-100">
+          <span class="text-lg">☕</span>
+          <span>Specialty Coffee</span>
+        </button>
+        <button type="button" data-category="pasta" class="category-tab flex items-center gap-2.5 px-5 sm:px-6 py-3 rounded-2xl text-sm font-semibold transition-all btn-tactile bg-cream-50 text-charcoal border border-sage-200 hover:bg-sage-100">
+          <span class="text-lg">🍝</span>
+          <span>Handmade Pasta</span>
+        </button>
+      </div>
+
+      <!-- Interactive Customizer Studio Grid -->
+      <div class="grid lg:grid-cols-12 gap-8 items-start reveal">
+        <!-- LEFT COLUMN: Base Dish Selector + Live SVG Dish Canvas (5 cols) -->
+        <div class="lg:col-span-5 glass-sage rounded-3xl p-6 sm:p-8 border border-sage-200 shadow-xl shadow-sage-900/5 lg:sticky lg:top-24">
+          <!-- Base Item Switcher Pills -->
+          <div class="mb-5">
+            <label class="block text-xs font-bold uppercase tracking-wider text-sage-600 mb-2">1. Choose Signature Base</label>
+            <div id="base-selector-container" class="grid grid-cols-2 gap-2.5">
+              <!-- Populated dynamically via JS -->
+            </div>
+          </div>
+
+          <!-- Live Dynamic SVG Dish Preview Container -->
+          <div class="relative rounded-2xl bg-gradient-to-b from-cream-100 to-sage-100/70 border border-sage-200/80 p-4 sm:p-6 flex flex-col items-center justify-center overflow-hidden">
+            <div class="w-full flex items-center justify-between text-xs text-sage-700 font-medium mb-2">
+              <span class="inline-flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-sage-600 animate-ping"></span>
+                Live Visual Preview
+              </span>
+              <span id="active-topping-count" class="px-2.5 py-0.5 rounded-full bg-white/85 border border-sage-200 text-charcoal font-semibold">3 selected</span>
+            </div>
+
+            <!-- Dynamic Dish SVG Stage -->
+            <div id="dish-canvas-stage" class="w-full max-w-[290px] aspect-square flex items-center justify-center my-1">
+              <!-- Rendered dynamically by renderDishSVG() -->
+            </div>
+
+            <!-- Selected Toppings Pill Summary -->
+            <div id="selected-pills-bar" class="w-full flex flex-wrap justify-center gap-1.5 mt-3 min-h-[28px]">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+
+          <!-- Dish Description & Price Summary -->
+          <div class="mt-6 pt-5 border-t border-sage-200/80 flex items-center justify-between gap-4">
+            <div>
+              <h3 id="current-dish-title" class="font-serif text-2xl font-bold text-charcoal">Sourdough Margherita</h3>
+              <p id="current-dish-desc" class="text-xs text-charcoal/70 mt-0.5">48-hr fermented sourdough crust, crushed San Marzano tomatoes.</p>
+            </div>
+            <div class="text-right shrink-0">
+              <span class="text-[11px] uppercase tracking-wider text-sage-600 font-semibold block">Total</span>
+              <span id="current-dish-price" class="font-serif text-3xl font-bold text-charcoal">₹428</span>
+            </div>
+          </div>
+
+          <!-- Add to Order CTA -->
+          <div class="mt-5 flex gap-3">
+            <button id="reset-toppings-btn" type="button" class="px-4 py-3.5 rounded-2xl border border-sage-300 text-sage-700 text-sm font-semibold hover:bg-sage-100 btn-tactile" title="Reset to Chef's Default">
+              Reset
+            </button>
+            <button id="add-to-order-btn" type="button" class="flex-1 py-3.5 px-5 rounded-2xl bg-sage-600 text-cream-50 font-semibold text-sm sm:text-base shadow-lg shadow-sage-600/25 hover:bg-sage-700 flex items-center justify-center gap-2 btn-tactile btn-shimmer">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14" /><path d="M5 12h14" />
+              </svg>
+              <span>Add to Table Order</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Interactive Topping / Ingredient Controls (7 cols) -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="glass-sage rounded-3xl p-6 sm:p-8 border border-sage-200 shadow-lg shadow-sage-900/5">
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-4 mb-6 border-b border-sage-200/70">
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-sage-600">2. Edit Toppings &amp; Layers</span>
+                <h3 class="font-serif text-2xl font-bold text-charcoal mt-0.5" id="customizer-panel-heading">Tap Ingredients to Add or Remove</h3>
+              </div>
+              <div class="flex items-center gap-3 text-[11px] font-semibold text-charcoal/70 bg-cream-100 px-3 py-1.5 rounded-full border border-sage-200">
+                <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-xs border border-sage-600 flex items-center justify-center"><span class="w-1.5 h-1.5 rounded-full bg-sage-600"></span></span> Veg</span>
+                <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-xs border border-terracotta flex items-center justify-center"><span class="w-1.5 h-1.5 rounded-full bg-terracotta"></span></span> Non-Veg</span>
+              </div>
+            </div>
+
+            <!-- Dynamic Topping Groups Container -->
+            <div id="topping-groups-container" class="space-y-7">
+              <!-- Populated dynamically via JS -->
+            </div>
+
+            <!-- Chef's Note Input -->
+            <div class="mt-8 pt-6 border-t border-sage-200/70">
+              <label for="chef-note-input" class="block text-xs font-bold uppercase tracking-wider text-sage-700 mb-2">
+                Special Kitchen Note (Optional)
+              </label>
+              <input id="chef-note-input" type="text" maxlength="90" placeholder="e.g., Extra crispy sourdough, less sweet, chilli flakes on the side..." class="w-full px-4 py-3 rounded-xl bg-cream-100/90 border border-sage-200 text-sm text-charcoal placeholder:text-charcoal/40 focus:outline-none focus:ring-2 focus:ring-sage-500" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 3. TABLE RESERVATION & INTERACTIVE FLOOR PLAN ==================== -->
+  <section id="reservations" class="py-20 sm:py-28 bg-cream-50 bg-grain">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Header -->
+      <div class="text-center max-w-2xl mx-auto mb-14 reveal">
+        <span class="text-xs font-bold uppercase tracking-[0.2em] text-sage-600">Dine In With Us</span>
+        <h2 class="font-serif text-3xl sm:text-5xl font-bold text-charcoal mt-2">Choose Your Spot at The scilent pattern</h2>
+        <p class="text-charcoal/70 mt-3 text-sm sm:text-base">
+          Tap any available table on our boutique floor plan—from sunlit reading alcoves to our sage-lined courtyard patio.
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-12 gap-8 items-stretch reveal">
+        <!-- Interactive Cafe Floor Plan (7 cols) -->
+        <div class="lg:col-span-7 bg-cream-100 rounded-3xl p-6 sm:p-8 border border-sage-200 shadow-lg shadow-sage-900/5 flex flex-col justify-between">
+          <!-- Floor Plan Legend -->
+          <div class="flex flex-wrap items-center justify-between gap-3 pb-5 mb-6 border-b border-sage-200/80">
+            <h3 class="font-serif text-xl font-bold text-charcoal">The scilent pattern • Floor Map</h3>
+            <div class="flex items-center gap-4 text-xs font-medium">
+              <span class="flex items-center gap-1.5">
+                <span class="w-3 h-3 rounded-full bg-cream-50 border-2 border-sage-500"></span> Available
+              </span>
+              <span class="flex items-center gap-1.5">
+                <span class="w-3 h-3 rounded-full bg-sage-600"></span> Selected
+              </span>
+              <span class="flex items-center gap-1.5">
+                <span class="w-3 h-3 rounded-full bg-sage-200/80"></span> Reserved
+              </span>
+            </div>
+          </div>
+
+          <!-- Visual Cafe Architecture Map -->
+          <div class="relative rounded-2xl bg-cream-50 border border-sage-200 p-4 sm:p-6 space-y-5">
+            <!-- Architectural Labels -->
+            <div class="flex justify-between text-[11px] font-bold uppercase tracking-widest text-sage-600/85">
+              <span>☀️ Sunlit Window Alcove</span>
+              <span>🌿 Olive Courtyard</span>
+            </div>
+
+            <!-- Interactive Tables Grid -->
+            <div id="floor-plan-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              <!-- Rendered dynamically by JS -->
+            </div>
+
+            <!-- Espresso Bar Architectural Anchor -->
+            <div class="mt-4 pt-3 border-t border-dashed border-sage-300 flex items-center justify-between text-xs text-sage-700 bg-sage-100/75 px-4 py-2.5 rounded-xl">
+              <span class="font-semibold">☕ Slow-Bar Espresso &amp; Sourdough Hearth</span>
+              <span class="text-[11px] text-sage-600">Open Kitchen View</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reservation Form & Instant Confirmation (5 cols) -->
+        <div class="lg:col-span-5 glass-sage rounded-3xl p-6 sm:p-8 border border-sage-200 shadow-xl shadow-sage-900/5 flex flex-col justify-between">
+          <form id="reservation-form" class="space-y-5">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-sage-600">Instant Table Hold</span>
+              <h3 class="font-serif text-2xl font-bold text-charcoal mt-0.5">Complete Your Reservation</h3>
+            </div>
+
+            <!-- Selected Table Banner -->
+            <div id="selected-table-banner" class="p-4 rounded-2xl bg-sage-100/90 border border-sage-300 flex items-center justify-between">
+              <div>
+                <p class="text-xs font-semibold text-sage-700 uppercase tracking-wide">Selected Table</p>
+                <p id="selected-table-name" class="font-serif text-lg font-bold text-charcoal">T1 • Window Alcove</p>
+              </div>
+              <span id="selected-table-seats" class="px-3 py-1 rounded-full bg-sage-600 text-cream-50 text-xs font-bold">2–4 Seats</span>
+            </div>
+
+            <!-- Guest Name -->
+            <div>
+              <label for="guest-name" class="block text-xs font-bold uppercase tracking-wider text-charcoal/75 mb-1.5">Your Name</label>
+              <input id="guest-name" type="text" required placeholder="e.g., Aarav Sharma" class="w-full px-4 py-3 rounded-xl bg-cream-100 border border-sage-200 text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-sage-500" />
+            </div>
+
+            <!-- Date & Time Row -->
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label for="res-date" class="block text-xs font-bold uppercase tracking-wider text-charcoal/75 mb-1.5">Date</label>
+                <input id="res-date" type="date" required class="w-full px-3.5 py-3 rounded-xl bg-cream-100 border border-sage-200 text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-sage-500" />
+              </div>
+              <div>
+                <label for="res-time" class="block text-xs font-bold uppercase tracking-wider text-charcoal/75 mb-1.5">Time</label>
+                <select id="res-time" class="w-full px-3.5 py-3 rounded-xl bg-cream-100 border border-sage-200 text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-sage-500">
+                  <option value="1:00 PM">1:00 PM (Lunch)</option>
+                  <option value="4:30 PM">4:30 PM (Coffee &amp; Bakes)</option>
+                  <option value="7:30 PM" selected>7:30 PM (Dinner)</option>
+                  <option value="9:00 PM">9:00 PM (Late Supper)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Guest Count -->
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-charcoal/75 mb-1.5">Number of Guests</label>
+              <div id="guest-count-pills" class="grid grid-cols-4 gap-2">
+                <button type="button" data-guests="1" class="guest-pill py-2.5 rounded-xl border border-sage-200 bg-cream-100 text-sm font-semibold text-charcoal hover:bg-sage-100">1 Guest</button>
+                <button type="button" data-guests="2" class="guest-pill active py-2.5 rounded-xl bg-sage-600 text-cream-50 text-sm font-semibold shadow-sm">2 Guests</button>
+                <button type="button" data-guests="4" class="guest-pill py-2.5 rounded-xl border border-sage-200 bg-cream-100 text-sm font-semibold text-charcoal hover:bg-sage-100">4 Guests</button>
+                <button type="button" data-guests="6" class="guest-pill py-2.5 rounded-xl border border-sage-200 bg-cream-100 text-sm font-semibold text-charcoal hover:bg-sage-100">6 Guests</button>
+              </div>
+            </div>
+
+            <button type="submit" class="w-full py-4 px-6 rounded-2xl bg-sage-600 text-cream-50 font-semibold text-base shadow-lg shadow-sage-600/25 hover:bg-sage-700 btn-tactile btn-shimmer">
+              Confirm Table Reservation
+            </button>
+          </form>
+
+          <!-- Instant Booking Confirmation Card (Hidden until booked) -->
+          <div id="reservation-confirmation" class="hidden text-center py-6 space-y-4 animate-pop-in">
+            <div class="w-16 h-16 rounded-full bg-sage-100 text-sage-600 mx-auto flex items-center justify-center border-2 border-sage-500">
+              <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+            </div>
+            <div>
+              <span class="text-xs font-bold uppercase tracking-widest text-sage-600">Table Reserved</span>
+              <h4 class="font-serif text-2xl font-bold text-charcoal mt-1" id="confirm-heading">We're Ready for You!</h4>
+              <p class="text-sm text-charcoal/75 mt-2 leading-relaxed" id="confirm-details"></p>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-cream-100 border border-sage-200 text-xs text-sage-800">
+              Tip: Any custom dishes in your Table Order are automatically paired with your table pass.
+            </div>
+            <button id="book-another-btn" type="button" class="px-5 py-2.5 rounded-xl border border-sage-300 text-sage-700 text-xs font-semibold hover:bg-sage-100 btn-tactile">
+              Modify or Book Another Table
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 4. CAFE INFO & INTERACTIVE QR CODE SECTION ==================== -->
+  <section id="cafe-qr" class="py-20 sm:py-28 bg-sage-800 text-cream-50 relative overflow-hidden">
+    <!-- Decorative Background Circles -->
+    <div class="pointer-events-none absolute -top-24 -left-24 w-96 h-96 rounded-full bg-sage-600/30 blur-3xl"></div>
+    <div class="pointer-events-none absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-sage-300/15 blur-3xl"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 reveal">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+        <!-- Left Story & Info Highlights (7 cols) -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sage-700/90 border border-sage-500/40 text-sage-200 text-xs font-semibold uppercase tracking-wider">
+            Digital Table Pass &amp; Cafe Guide
+          </div>
+
+          <h2 class="font-serif text-3xl sm:text-5xl font-bold text-cream-50 leading-tight">
+            Scan for Our Story, Wi-Fi &amp; Estate Sourcing.
+          </h2>
+
+          <p class="text-cream-100/80 text-base leading-relaxed max-w-2xl">
+            Every table at <strong class="text-cream-50">The scilent pattern</strong> holds a tactile botanical QR pass. Tap or scan the QR card to unlock complimentary high-speed Wi-Fi, allergen notes, our 48-hour sourdough craft, and Indian estate coffee partners.
+          </p>
+
+          <!-- Quick Cafe Info Cards -->
+          <div class="grid sm:grid-cols-3 gap-4 pt-2">
+            <div class="p-4 rounded-2xl bg-sage-700/60 border border-sage-500/30">
+              <p class="text-xs uppercase tracking-wider text-sage-300 font-semibold">Location</p>
+              <p class="font-serif text-lg font-semibold text-cream-50 mt-1">14 Botanical Lane</p>
+              <p class="text-xs text-cream-200/75 mt-0.5">Indiranagar, Bengaluru</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-sage-700/60 border border-sage-500/30">
+              <p class="text-xs uppercase tracking-wider text-sage-300 font-semibold">Cafe Hours</p>
+              <p class="font-serif text-lg font-semibold text-cream-50 mt-1">8:00 AM – 11:00 PM</p>
+              <p class="text-xs text-cream-200/75 mt-0.5">All-day sourdough &amp; brews</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-sage-700/60 border border-sage-500/30">
+              <p class="text-xs uppercase tracking-wider text-sage-300 font-semibold">Guest Wi-Fi</p>
+              <p class="font-serif text-lg font-semibold text-cream-50 mt-1">ScilentPattern_5G</p>
+              <p class="text-xs text-sage-200 mt-0.5">Tap QR card for key</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Interactive Scannable QR Code Card (5 cols) -->
+        <div class="lg:col-span-5 flex justify-center">
+          <div id="qr-card-trigger" role="button" tabindex="0" aria-label="Scan or click QR code to view full cafe details" class="group cursor-pointer w-full max-w-sm rounded-[2rem] bg-cream-50 text-charcoal p-7 shadow-2xl border-4 border-sage-300/60 hover:border-gold transition-all duration-300 btn-tactile text-center relative">
+            <div class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-sage-600 mb-4">
+              <span>The scilent pattern</span>
+              <span class="px-2.5 py-0.5 rounded-full bg-sage-100 text-sage-700">Table Pass #04</span>
+            </div>
+
+            <!-- Stylized Scannable SVG QR Code with Animated Scan Beam -->
+            <div class="relative w-48 h-48 mx-auto p-3.5 rounded-2xl bg-white border-2 border-sage-200 shadow-inner flex items-center justify-center overflow-hidden">
+              <!-- Animated Laser Scan Line -->
+              <div class="absolute top-2 inset-x-2 h-0.5 bg-gradient-to-r from-transparent via-terracotta to-transparent shadow-[0_0_8px_#C86D51] animate-scan z-10"></div>
+
+              <!-- Crisp Custom QR SVG -->
+              <svg class="w-full h-full text-charcoal" viewBox="0 0 120 120" fill="currentColor">
+                <!-- Top-Left Finder Pattern -->
+                <path d="M10 10h30v30H10V10zm5 5v20h20V15H15zm5 5h10v10H20V20z" />
+                <!-- Top-Right Finder Pattern -->
+                <path d="M80 10h30v30H80V10zm5 5v20h20V15H85zm5 5h10v10H90V20z" />
+                <!-- Bottom-Left Finder Pattern -->
+                <path d="M10 80h30v30H10V80zm5 5v20h20V85H15zm5 5h10v10H20V90z" />
+                <!-- Data Modules -->
+                <rect x="48" y="12" width="6" height="6" rx="1" />
+                <rect x="60" y="12" width="12" height="6" rx="1" />
+                <rect x="48" y="24" width="12" height="6" rx="1" />
+                <rect x="66" y="24" width="6" height="12" rx="1" />
+                <rect x="12" y="48" width="12" height="6" rx="1" />
+                <rect x="30" y="48" width="6" height="12" rx="1" />
+                <rect x="12" y="60" width="6" height="12" rx="1" />
+                <rect x="24" y="66" width="12" height="6" rx="1" />
+                <!-- Center Botanical Leaf Emblem -->
+                <circle cx="60" cy="60" r="14" fill="#5F7464" />
+                <path d="M55 65c0-6 6-10 11-10 0 6-4 10-11 10z" fill="#FAF9F6" />
+                <!-- Lower Right Modules -->
+                <rect x="82" y="48" width="12" height="6" rx="1" />
+                <rect x="100" y="48" width="8" height="12" rx="1" />
+                <rect x="82" y="62" width="6" height="12" rx="1" />
+                <rect x="94" y="68" width="14" height="6" rx="1" />
+                <rect x="48" y="82" width="6" height="14" rx="1" />
+                <rect x="60" y="82" width="12" height="6" rx="1" />
+                <rect x="60" y="96" width="6" height="12" rx="1" />
+                <rect x="74" y="90" width="12" height="6" rx="1" />
+                <rect x="92" y="82" width="16" height="6" rx="1" />
+                <rect x="82" y="102" width="12" height="6" rx="1" />
+                <rect x="100" y="94" width="8" height="14" rx="1" />
+              </svg>
+            </div>
+
+            <div class="mt-5 space-y-1.5">
+              <p class="font-serif text-xl font-bold text-charcoal group-hover:text-sage-700 transition-colors">
+                Tap to Reveal Cafe Info
+              </p>
+              <p class="text-xs text-charcoal/65">
+                Opens Wi-Fi password, sourcing, allergens &amp; our story
+              </p>
+            </div>
+
+            <div class="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sage-600 text-cream-50 text-xs font-semibold group-hover:bg-sage-700 transition-colors">
+              <span>Inspect Cafe Pass</span>
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M15 3h6v6" /><path d="M10 14 21 3" /><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="bg-sage-900 text-cream-200/75 py-10 border-t border-sage-700/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+      <div class="flex items-center gap-2">
+        <span class="font-serif text-base font-bold text-cream-50">The scilent pattern</span>
+        <span>•</span>
+        <span>Artisan Cafe &amp; Kitchen</span>
+      </div>
+      <p>Crafted fresh to order with organic garden herbs, 48-hr sourdough &amp; Chikmagalur estate beans.</p>
+    </div>
+  </footer>
+
+  <!-- ==================== MODAL: QR CODE CAFE INFO REVEAL ==================== -->
+  <div id="qr-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-charcoal/60 backdrop-blur-sm">
+    <div class="bg-cream-50 text-charcoal w-full max-w-lg rounded-3xl border border-sage-200 shadow-2xl overflow-hidden animate-pop-in">
+      <!-- Modal Top Header -->
+      <div class="bg-sage-600 text-cream-50 px-6 py-5 flex items-center justify-between">
+        <div>
+          <span class="text-[11px] uppercase tracking-[0.2em] text-sage-200 font-semibold">Digital Table Pass</span>
+          <h3 class="font-serif text-2xl font-bold">About The scilent pattern</h3>
+        </div>
+        <button id="close-qr-modal" type="button" aria-label="Close Cafe Info Modal" class="w-9 h-9 rounded-full bg-sage-700/80 hover:bg-sage-800 flex items-center justify-center text-cream-50 transition-colors">
+          ✕
+        </button>
+      </div>
+
+      <!-- Modal Content -->
+      <div class="p-6 space-y-5 max-h-[80vh] overflow-y-auto">
+        <!-- Our Story -->
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-sage-600 mb-1">Our Culinary Philosophy</h4>
+          <p class="text-sm text-charcoal/80 leading-relaxed">
+            Born from a love of slow mornings and tactile craft, <strong>The scilent pattern</strong> pairs quiet, sunlit hospitality with an interactive open kitchen. Tailor every topping, roast, sauce, and herb before it meets the hearth.
+          </p>
+        </div>
+
+        <!-- Instant Wi-Fi Copy Box -->
+        <div class="p-4 rounded-2xl bg-sage-100 border border-sage-200 flex items-center justify-between gap-3">
+          <div>
+            <p class="text-xs font-bold text-sage-800 uppercase tracking-wide">Complimentary Cafe Wi-Fi</p>
+            <p class="text-sm text-charcoal mt-0.5">Network: <strong>ScilentPattern_5G</strong> • Pass: <code id="wifi-pass-text" class="px-1.5 py-0.5 rounded bg-white font-mono text-xs font-bold text-sage-700">quietpattern26</code></p>
+          </div>
+          <button id="copy-wifi-btn" type="button" class="px-3.5 py-2 rounded-xl bg-sage-600 text-cream-50 text-xs font-semibold hover:bg-sage-700 shrink-0 btn-tactile">
+            Copy Key
+          </button>
+        </div>
+
+        <!-- Sourcing & Allergen Highlights -->
+        <div class="grid sm:grid-cols-2 gap-3 text-xs">
+          <div class="p-3.5 rounded-2xl bg-cream-100 border border-sage-200">
+            <p class="font-bold text-charcoal mb-1">🌱 Estate &amp; Farm Partners</p>
+            <p class="text-charcoal/75 leading-relaxed">Single-origin Arabica from Chikmagalur estates, Nilgiri heirloom vegetables, and patio-grown sage &amp; basil.</p>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-cream-100 border border-sage-200">
+            <p class="font-bold text-charcoal mb-1">🌾 Allergen Transparency</p>
+            <p class="text-charcoal/75 leading-relaxed">Gluten-free ragi &amp; almond crust, barista oat milk, and house-cultured cashew mozzarella available on request.</p>
+          </div>
+        </div>
+
+        <!-- Contact & Hours -->
+        <div class="pt-3 border-t border-sage-200 flex items-center justify-between text-xs text-charcoal/75">
+          <span>📍 14 Botanical Lane, Indiranagar</span>
+          <span>📞 +91 80 4120 8890</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE-OVER DRAWER: TABLE ORDER CART ==================== -->
+  <div id="cart-drawer-overlay" class="fixed inset-0 z-50 hidden bg-charcoal/50 backdrop-blur-xs">
+    <div id="cart-drawer" class="ml-auto w-full max-w-md h-full bg-cream-50 shadow-2xl border-l border-sage-200 flex flex-col justify-between">
+      <!-- Drawer Header -->
+      <div class="px-6 py-5 bg-cream-100 border-b border-sage-200 flex items-center justify-between">
+        <div>
+          <span class="text-[11px] uppercase tracking-widest text-sage-600 font-bold">The scilent pattern • Live Ticket</span>
+          <h3 class="font-serif text-2xl font-bold text-charcoal">Your Table Order</h3>
+        </div>
+        <button id="close-cart-btn" type="button" aria-label="Close Order Drawer" class="w-9 h-9 rounded-full bg-cream-50 border border-sage-200 text-charcoal hover:bg-sage-100 flex items-center justify-center">
+          ✕
+        </button>
+      </div>
+
+      <!-- Cart Items List -->
+      <div id="cart-items-container" class="flex-1 p-6 overflow-y-auto space-y-4">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Cart Footer & Checkout -->
+      <div class="p-6 bg-cream-100 border-t border-sage-200 space-y-4">
+        <div class="space-y-1.5 text-sm">
+          <div class="flex justify-between text-charcoal/75">
+            <span>Subtotal</span>
+            <span id="cart-subtotal">₹428</span>
+          </div>
+          <div class="flex justify-between text-charcoal/75">
+            <span>GST (5%)</span>
+            <span id="cart-tax">₹21</span>
+          </div>
+          <div class="flex justify-between font-serif text-xl font-bold text-charcoal pt-2 border-t border-sage-200">
+            <span>Total Payable</span>
+            <span id="cart-total">₹449</span>
+          </div>
+        </div>
+
+        <button id="place-order-btn" type="button" class="w-full py-4 px-6 rounded-2xl bg-sage-600 text-cream-50 font-semibold text-base shadow-lg shadow-sage-600/25 hover:bg-sage-700 btn-tactile btn-shimmer">
+          Send Custom Order to Kitchen
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST NOTIFICATION BANNER ==================== -->
+  <div id="toast-banner" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-4 transition-all duration-300">
+    <div class="px-5 py-3 rounded-full bg-charcoal text-cream-50 text-xs sm:text-sm font-medium shadow-xl flex items-center gap-2.5 border border-sage-500/40">
+      <span class="w-2 h-2 rounded-full bg-sage-300"></span>
+      <span id="toast-message">Added to your table order!</span>
+    </div>
+  </div>
+
+  <!-- ==================== INTERACTIVE JAVASCRIPT APPLICATION ==================== -->
+  <script>
+    /**
+     * The scilent pattern — Interactive Cafe Application
+     * Handles real-time dish/topping customization with SVG visual layer rendering,
+     * dynamic Indian Rupee (₹) pricing, table order drawer, interactive floor plan, and QR modal.
+     */
+
+    // Helper: Format Indian Rupees cleanly
+    function formatINR(amount) {
+      return `₹${Math.round(amount).toLocaleString('en-IN')}`;
+    }
+
+    // 1. MENU & CUSTOMIZATION DATA MODEL (INDIAN RUPEES ₹)
+    const MENU_DATA = {
+      pizza: {
+        label: 'Artisan Pizza',
+        bases: [
+          { id: 'margherita', name: 'Sourdough Margherita', price: 349, desc: '48-hr fermented sourdough crust, crushed San Marzano tomatoes.' },
+          { id: 'truffle_white', name: 'White Sage & Truffle', price: 429, desc: 'Roasted garlic ricotta cream, cracked pepper & sourdough base.' },
+        ],
+        groups: [
+          {
+            title: 'Cheeses & Sauces',
+            items: [
+              { id: 'mozzarella', name: 'Fior di Latte Mozzarella', price: 0, default: true, emoji: '🧀', veg: true },
+              { id: 'burrata', name: 'Creamy Burrata Dollops', price: 99, default: false, emoji: '🤍', veg: true },
+              { id: 'pesto_drizzle', name: 'Basil & Sage Pesto', price: 59, default: false, emoji: '🌿', veg: true },
+            ],
+          },
+          {
+            title: 'Garden & Hearth Toppings',
+            items: [
+              { id: 'fresh_sage', name: 'Crispy Garden Sage', price: 30, default: true, emoji: '🍃', veg: true },
+              { id: 'cherry_tomato', name: 'Roasted Cherry Tomatoes', price: 49, default: true, emoji: '🍅', veg: true },
+              { id: 'mushrooms', name: 'Wild Forest Mushrooms', price: 69, default: false, emoji: '🍄', veg: true },
+              { id: 'black_olives', name: 'Kalamata Black Olives', price: 49, default: false, emoji: '🫒', veg: true },
+              { id: 'pepperoni', name: 'Smoked Chicken Pepperoni', price: 89, default: false, emoji: '🥩', veg: false },
+            ],
+          },
+        ],
+      },
+      burger: {
+        label: 'Brioche Burgers',
+        bases: [
+          { id: 'portobello_plant', name: 'Herb Portobello & Cottage Stack', price: 279, desc: 'Char-grilled balsamic portobello & herb paneer on toasted brioche.' },
+          { id: 'smash_beef', name: 'Spiced Lamb Smash Burger', price: 339, desc: 'Toasted sesame brioche bun, seared herbed patty & house aioli.' },
+        ],
+        groups: [
+          {
+            title: 'Melted Cheeses & Spreads',
+            items: [
+              { id: 'aged_cheddar', name: 'Aged Sharp Cheddar', price: 0, default: true, emoji: '🧀', veg: true },
+              { id: 'sage_aioli', name: 'Roasted Garlic Sage Aioli', price: 39, default: true, emoji: '🥣', veg: true },
+              { id: 'caramel_onion', name: 'Balsamic Caramelized Onions', price: 49, default: false, emoji: '🧅', veg: true },
+            ],
+          },
+          {
+            title: 'Crisp Layers & Add-Ons',
+            items: [
+              { id: 'butter_lettuce', name: 'Hydroponic Butter Lettuce', price: 0, default: true, emoji: '🥬', veg: true },
+              { id: 'heirloom_tomato', name: 'Heirloom Tomato Slice', price: 29, default: true, emoji: '🍅', veg: true },
+              { id: 'avocado', name: 'Smashed Hass Avocado', price: 79, default: false, emoji: '🥑', veg: true },
+              { id: 'crispy_bacon', name: 'Smoked Chicken Rashers', price: 79, default: false, emoji: '🥓', veg: false },
+              { id: 'pickles', name: 'House Dill Pickles', price: 29, default: false, emoji: '🥒', veg: true },
+            ],
+          },
+        ],
+      },
+      coffee: {
+        label: 'Specialty Coffee',
+        bases: [
+          { id: 'velvet_latte', name: 'Chikmagalur Velvet Latte', price: 189, desc: 'Double-shot estate espresso with silky micro-foamed milk.' },
+          { id: 'iced_matcha_espresso', name: 'Sage Cold Brew Tonic', price: 229, desc: '18-hour slow-steeped estate cold brew over botanical ice.' },
+        ],
+        groups: [
+          {
+            title: 'Milk Selection',
+            items: [
+              { id: 'oat_milk', name: 'Barista Oat Milk', price: 39, default: true, emoji: '🌾', veg: true },
+              { id: 'whole_milk', name: 'Farm Fresh A2 Milk', price: 0, default: false, emoji: '🥛', veg: true },
+            ],
+          },
+          {
+            title: 'Botanical Syrups & Toppings',
+            items: [
+              { id: 'vanilla_bean', name: 'Madagascar Vanilla Syrup', price: 35, default: true, emoji: '🌼', veg: true },
+              { id: 'honey_sage', name: 'Wildflower Honey & Sage', price: 45, default: false, emoji: '🍯', veg: true },
+              { id: 'cinnamon_dust', name: 'Ceylon Cinnamon Dust', price: 25, default: true, emoji: '✨', veg: true },
+              { id: 'whipped_cream', name: 'Vanilla Bean Cold Foam', price: 49, default: false, emoji: '☁️', veg: true },
+              { id: 'cocoa_nibs', name: 'Idukki Roasted Cacao Nibs', price: 39, default: false, emoji: '🍫', veg: true },
+            ],
+          },
+        ],
+      },
+      pasta: {
+        label: 'Handmade Pasta',
+        bases: [
+          { id: 'tagliatelle', name: 'Hand-Cut Tagliatelle', price: 329, desc: 'Bronze-die ribbons tossed in herb-infused olive oil.' },
+          { id: 'rigatoni', name: 'Artisan Rigatoni', price: 319, desc: 'Ridged semolina tubes crafted to hold rich velvet sauces.' },
+        ],
+        groups: [
+          {
+            title: 'Sauce & Cheese Finish',
+            items: [
+              { id: 'sage_butter', name: 'Brown Butter & Sage Emulsion', price: 0, default: true, emoji: '🧈', veg: true },
+              { id: 'creamy_pesto', name: 'Pistachio & Basil Pesto', price: 69, default: false, emoji: '🌿', veg: true },
+              { id: 'parmesan', name: '24-Month Parmigiano Shavings', price: 49, default: true, emoji: '🧀', veg: true },
+            ],
+          },
+          {
+            title: 'Artisan Toss-Ins',
+            items: [
+              { id: 'pasta_tomatoes', name: 'Blistered Sun-Gold Tomatoes', price: 49, default: true, emoji: '🍅', veg: true },
+              { id: 'pasta_mushrooms', name: 'Sautéed Cremini Mushrooms', price: 69, default: false, emoji: '🍄', veg: true },
+              { id: 'pine_nuts', name: 'Toasted Pine Nuts', price: 59, default: false, emoji: '🌰', veg: true },
+              { id: 'fresh_basil_pasta', name: 'Torn Sweet Basil Leaves', price: 29, default: true, emoji: '🍃', veg: true },
+            ],
+          },
+        ],
+      },
+    };
+
+    // 2. CAFE FLOOR PLAN TABLES
+    const CAFE_TABLES = [
+      { id: 'T1', name: 'Window Alcove', seats: '2–4 Seats', zone: 'Sunlit Glass', occupied: false },
+      { id: 'T2', name: 'Quiet Reading Nook', seats: '2 Seats', zone: 'Herb Wall', occupied: false },
+      { id: 'T3', name: 'Olive Table', seats: '4–6 Seats', zone: 'Center Hearth', occupied: true },
+      { id: 'T4', name: 'Garden Courtyard', seats: '2–4 Seats', zone: 'Outdoor Terrace', occupied: false },
+      { id: 'T5', name: 'Pattern Booth', seats: '2 Seats', zone: 'Quiet Lounge', occupied: false },
+      { id: 'T6', name: 'Harvest Table', seats: '6 Seats', zone: 'Patio Pergola', occupied: false },
+    ];
+
+    // 3. APPLICATION STATE
+    const state = {
+      category: 'pizza',
+      selectedBaseId: 'margherita',
+      selectedToppings: new Set(['mozzarella', 'fresh_sage', 'cherry_tomato']),
+      selectedTableId: 'T1',
+      guestCount: '2',
+      cart: [
+        {
+          id: 'initial-1',
+          category: 'pizza',
+          name: 'Sourdough Margherita',
+          toppings: ['Fior di Latte Mozzarella', 'Crispy Garden Sage', 'Roasted Cherry Tomatoes'],
+          note: '',
+          price: 428,
+          qty: 1,
+        },
+      ],
+    };
+
+    // 4. DOM ELEMENT REFERENCES
+    const categoryTabs = document.querySelectorAll('.category-tab');
+    const baseSelectorContainer = document.getElementById('base-selector-container');
+    const toppingGroupsContainer = document.getElementById('topping-groups-container');
+    const dishCanvasStage = document.getElementById('dish-canvas-stage');
+    const selectedPillsBar = document.getElementById('selected-pills-bar');
+    const activeToppingCount = document.getElementById('active-topping-count');
+    const currentDishTitle = document.getElementById('current-dish-title');
+    const currentDishDesc = document.getElementById('current-dish-desc');
+    const currentDishPrice = document.getElementById('current-dish-price');
+    const chefNoteInput = document.getElementById('chef-note-input');
+
+    // Mobile Nav Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileNavPanel = document.getElementById('mobile-nav-panel');
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileNavPanel.classList.toggle('hidden');
+    });
+    document.querySelectorAll('.mobile-nav-link').forEach((link) => {
+      link.addEventListener('click', () => mobileNavPanel.classList.add('hidden'));
+    });
+
+    // Helper: Get current category object & selected base object
+    function getCurrentCategoryObj() {
+      return MENU_DATA[state.category];
+    }
+
+    function getCurrentBaseObj() {
+      const cat = getCurrentCategoryObj();
+      return cat.bases.find((b) => b.id === state.selectedBaseId) || cat.bases[0];
+    }
+
+    function getAllToppingsInCategory() {
+      return getCurrentCategoryObj().groups.flatMap((g) => g.items);
+    }
+
+    function calculateCurrentPrice() {
+      const base = getCurrentBaseObj();
+      const allToppings = getAllToppingsInCategory();
+      let total = base.price;
+      state.selectedToppings.forEach((tid) => {
+        const found = allToppings.find((t) => t.id === tid);
+        if (found) total += found.price;
+      });
+      return total;
+    }
+
+    // 5. DYNAMIC VISUAL DISH ILLUSTRATION RENDERER (SVG LAYERS)
+    function renderDishSVG() {
+      const t = state.selectedToppings;
+      const baseId = state.selectedBaseId;
+
+      if (state.category === 'pizza') {
+        const isWhiteSauce = baseId === 'truffle_white';
+        dishCanvasStage.innerHTML = `
+          <svg class="w-full h-full drop-shadow-md" viewBox="0 0 260 260" fill="none">
+            <!-- Wooden Serving Board -->
+            <circle cx="130" cy="130" r="120" fill="#E8E2D5" stroke="#D8CEBC" stroke-width="3" />
+            <!-- Sourdough Crust -->
+            <circle cx="130" cy="130" r="102" fill="#DDA968" />
+            <circle cx="130" cy="130" r="95" fill="#E9BC7F" />
+            <!-- Sauce Layer -->
+            <circle cx="130" cy="130" r="85" fill="${isWhiteSauce ? '#F5EFE0' : '#C8533B'}" />
+
+            <!-- Mozzarella Cheese Layer -->
+            ${t.has('mozzarella') ? `
+              <g class="animate-pop-in">
+                <circle cx="105" cy="105" r="22" fill="#FFFDF7" />
+                <circle cx="155" cy="108" r="24" fill="#FFFDF7" />
+                <circle cx="130" cy="155" r="26" fill="#FFFDF7" />
+                <circle cx="96" cy="142" r="18" fill="#FFFDF7" />
+                <circle cx="162" cy="144" r="19" fill="#FFFDF7" />
+                <circle cx="130" cy="126" r="22" fill="#FFFDF7" />
+              </g>
+            ` : ''}
+
+            <!-- Pesto Drizzle Layer -->
+            ${t.has('pesto_drizzle') ? `
+              <g class="animate-pop-in">
+                <path d="M85 115 Q130 95 175 115 T85 145 T175 160" stroke="#5F7464" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.85" />
+              </g>
+            ` : ''}
+
+            <!-- Wild Mushrooms -->
+            ${t.has('mushrooms') ? `
+              <g class="animate-pop-in" fill="#8C735B">
+                <path d="M98 95c0-7 14-7 14 0h-4v6h-6v-6h-4z" />
+                <path d="M148 135c0-7 14-7 14 0h-4v6h-6v-6h-4z" />
+                <path d="M110 158c0-7 14-7 14 0h-4v6h-6v-6h-4z" />
+              </g>
+            ` : ''}
+
+            <!-- Smoked Chicken Pepperoni -->
+            ${t.has('pepperoni') ? `
+              <g class="animate-pop-in">
+                <circle cx="112" cy="122" r="11" fill="#A93626" />
+                <circle cx="152" cy="116" r="11" fill="#A93626" />
+                <circle cx="134" cy="152" r="11" fill="#A93626" />
+                <circle cx="98" cy="148" r="10" fill="#A93626" />
+              </g>
+            ` : ''}
+
+            <!-- Roasted Cherry Tomatoes -->
+            ${t.has('cherry_tomato') ? `
+              <g class="animate-pop-in">
+                <circle cx="132" cy="96" r="8" fill="#E04F33" />
+                <circle cx="130" cy="94" r="2" fill="#F9B4A6" />
+                <circle cx="164" cy="134" r="8" fill="#E04F33" />
+                <circle cx="102" cy="134" r="8" fill="#E04F33" />
+                <circle cx="144" cy="166" r="7.5" fill="#E04F33" />
+              </g>
+            ` : ''}
+
+            <!-- Kalamata Black Olives -->
+            ${t.has('black_olives') ? `
+              <g class="animate-pop-in" stroke="#2B302C" stroke-width="3.5" fill="none">
+                <circle cx="122" cy="112" r="5" />
+                <circle cx="148" cy="146" r="5" />
+                <circle cx="116" cy="146" r="5" />
+              </g>
+            ` : ''}
+
+            <!-- Creamy Burrata Dollops -->
+            ${t.has('burrata') ? `
+              <g class="animate-pop-in">
+                <circle cx="130" cy="130" r="15" fill="#FFFFFF" stroke="#E8E2D5" stroke-width="2" />
+                <circle cx="108" cy="108" r="11" fill="#FFFFFF" stroke="#E8E2D5" stroke-width="1.5" />
+              </g>
+            ` : ''}
+
+            <!-- Crispy Garden Sage Leaves -->
+            ${t.has('fresh_sage') ? `
+              <g class="animate-pop-in">
+                <path d="M136 122c7-7 18-4 20 4-8 4-16 2-20-4z" fill="#5F7464" />
+                <path d="M104 126c-7-7-2-18 6-18 3 8 0 15-6 18z" fill="#7C9082" />
+                <path d="M124 162c6-6 16-3 18 4-7 3-14 2-18-4z" fill="#5F7464" />
+              </g>
+            ` : ''}
+          </svg>
+        `;
+      } else if (state.category === 'burger') {
+        const isMushroomPatty = baseId === 'portobello_plant';
+        dishCanvasStage.innerHTML = `
+          <svg class="w-full h-full drop-shadow-md" viewBox="0 0 260 260" fill="none">
+            <!-- Plate Shadow -->
+            <ellipse cx="130" cy="224" rx="92" ry="14" fill="#D8CEBC" opacity="0.6" />
+
+            <!-- Bottom Brioche Bun -->
+            <path d="M62 192h136c0 14-12 24-28 24H90c-16 0-28-10-28-24z" fill="#D99B52" />
+
+            <!-- Hydroponic Butter Lettuce -->
+            ${t.has('butter_lettuce') ? `
+              <path class="animate-pop-in" d="M54 186c12-8 24 6 38 0s26-8 38 0 26-8 38 0 24-6 38 0c-4 8-14 10-24 8H78c-10 2-20 0-24-8z" fill="#7C9082" />
+            ` : ''}
+
+            <!-- Heirloom Tomato Slice -->
+            ${t.has('heirloom_tomato') ? `
+              <rect class="animate-pop-in" x="68" y="172" width="124" height="10" rx="5" fill="#D94E34" />
+            ` : ''}
+
+            <!-- House Dill Pickles -->
+            ${t.has('pickles') ? `
+              <g class="animate-pop-in" fill="#5F7464">
+                <rect x="74" y="165" width="34" height="7" rx="3.5" />
+                <rect x="114" y="165" width="34" height="7" rx="3.5" />
+                <rect x="152" y="165" width="32" height="7" rx="3.5" />
+              </g>
+            ` : ''}
+
+            <!-- Signature Patty -->
+            <rect x="60" y="144" width="140" height="22" rx="11" fill="${isMushroomPatty ? '#6D5443' : '#4E3529'}" />
+
+            <!-- Aged Sharp Cheddar -->
+            ${t.has('aged_cheddar') ? `
+              <path class="animate-pop-in" d="M64 142h132l-14 16-24-12-28 14-28-14-24 12-14-16z" fill="#F2B84B" />
+            ` : ''}
+
+            <!-- Smoked Chicken Rashers -->
+            ${t.has('crispy_bacon') ? `
+              <path class="animate-pop-in" d="M62 134c22-6 44 6 68 0s46-6 68 0v7c-22-6-44 6-68 0s-46-6-68 0v-7z" fill="#A83E2B" />
+            ` : ''}
+
+            <!-- Smashed Avocado -->
+            ${t.has('avocado') ? `
+              <rect class="animate-pop-in" x="72" y="124" width="116" height="10" rx="5" fill="#A3B18A" />
+            ` : ''}
+
+            <!-- Caramelized Onions -->
+            ${t.has('caramel_onion') ? `
+              <path class="animate-pop-in" d="M78 120c18-5 36 4 52 0s34-5 52 0" stroke="#7A4928" stroke-width="5" stroke-linecap="round" />
+            ` : ''}
+
+            <!-- Sage Aioli Drizzle -->
+            ${t.has('sage_aioli') ? `
+              <path class="animate-pop-in" d="M76 114c18 4 36-4 54 0s36 4 54 0" stroke="#F4F1EA" stroke-width="5" stroke-linecap="round" />
+            ` : ''}
+
+            <!-- Top Sesame Brioche Dome -->
+            <path d="M62 112c0-36 30-60 68-60s68 24 68 60H62z" fill="#E3A65B" />
+            <!-- Sesame Seeds -->
+            <g fill="#FAF9F6">
+              <ellipse cx="105" cy="74" rx="3" ry="1.8" transform="rotate(-15 105 74)" />
+              <ellipse cx="130" cy="68" rx="3" ry="1.8" />
+              <ellipse cx="154" cy="76" rx="3" ry="1.8" transform="rotate(15 154 76)" />
+              <ellipse cx="118" cy="88" rx="3" ry="1.8" transform="rotate(10 118 88)" />
+              <ellipse cx="144" cy="88" rx="3" ry="1.8" transform="rotate(-10 144 88)" />
+            </g>
+          </svg>
+        `;
+      } else if (state.category === 'coffee') {
+        const isColdBrew = baseId === 'iced_matcha_espresso';
+        dishCanvasStage.innerHTML = `
+          <svg class="w-full h-full drop-shadow-md" viewBox="0 0 260 260" fill="none">
+            <!-- Rising Aromatic Steam -->
+            ${!isColdBrew ? `
+              <g stroke="#7C9082" stroke-width="3" stroke-linecap="round" opacity="0.6">
+                <path class="animate-steam" d="M105 68c-6-10 6-18 0-28" />
+                <path class="animate-steam" style="animation-delay: 0.7s" d="M130 64c-6-10 6-18 0-28" />
+                <path class="animate-steam" style="animation-delay: 1.4s" d="M155 68c-6-10 6-18 0-28" />
+              </g>
+            ` : ''}
+
+            <!-- Saucer -->
+            <ellipse cx="130" cy="216" rx="84" ry="14" fill="#E8E2D5" stroke="#D8CEBC" stroke-width="2" />
+
+            <!-- Cup Handle -->
+            <path d="M184 114h16c14 0 22 10 22 24s-8 24-22 24h-16" stroke="#FAF9F6" stroke-width="12" stroke-linecap="round" />
+            <path d="M184 114h16c14 0 22 10 22 24s-8 24-22 24h-16" stroke="#CBD9CD" stroke-width="2" stroke-linecap="round" />
+
+            <!-- Ceramic Sage & Cream Mug Body -->
+            <path d="M72 96h116v68c0 28-22 48-58 48s-58-20-58-48V96z" fill="#FAF9F6" stroke="#CBD9CD" stroke-width="3" />
+            <!-- Sage Band Accent -->
+            <path d="M74 144h112v20c0 24-20 44-56 44s-56-20-56-44v-20z" fill="#7C9082" opacity="0.22" />
+
+            <!-- Coffee Liquid Surface -->
+            <ellipse cx="130" cy="96" rx="56" ry="14" fill="${t.has('oat_milk') || t.has('whole_milk') ? '#B88963' : '#4A2E1B'}" />
+
+            <!-- Ice Cubes if Cold Brew -->
+            ${isColdBrew ? `
+              <g fill="#E5ECE6" opacity="0.85">
+                <rect x="98" y="88" width="18" height="14" rx="4" transform="rotate(-10 98 88)" />
+                <rect x="132" y="86" width="18" height="14" rx="4" transform="rotate(12 132 86)" />
+              </g>
+            ` : ''}
+
+            <!-- Vanilla Bean Cold Foam / Whipped Cream -->
+            ${t.has('whipped_cream') ? `
+              <path class="animate-pop-in" d="M82 94c0-18 22-28 48-28s48 10 48 28c-14 6-82 6-96 0z" fill="#FFFDF9" stroke="#E8E2D5" stroke-width="2" />
+            ` : ''}
+
+            <!-- Wildflower Honey & Sage Drizzle -->
+            ${t.has('honey_sage') ? `
+              <g class="animate-pop-in">
+                <path d="M100 92c15-5 45 5 60 0" stroke="#D4A359" stroke-width="4" stroke-linecap="round" />
+                <path d="M126 84c5-5 12-3 14 2-5 3-11 2-14-2z" fill="#5F7464" />
+              </g>
+            ` : ''}
+
+            <!-- Cinnamon Dust & Cacao Nibs -->
+            ${t.has('cinnamon_dust') || t.has('cocoa_nibs') ? `
+              <g class="animate-pop-in" fill="#6B3E26">
+                <circle cx="116" cy="92" r="2" />
+                <circle cx="128" cy="89" r="2.2" />
+                <circle cx="142" cy="93" r="2" />
+                <circle cx="122" cy="96" r="1.8" />
+                <circle cx="136" cy="95" r="2" />
+              </g>
+            ` : ''}
+          </svg>
+        `;
+      } else {
+        // PASTA SVG
+        const isPesto = t.has('creamy_pesto');
+        dishCanvasStage.innerHTML = `
+          <svg class="w-full h-full drop-shadow-md" viewBox="0 0 260 260" fill="none">
+            <!-- Deep Artisan Ceramic Pasta Bowl -->
+            <circle cx="130" cy="134" r="112" fill="#E8E2D5" />
+            <circle cx="130" cy="134" r="96" fill="#FAF9F6" stroke="#CBD9CD" stroke-width="3" />
+
+            <!-- Pasta Ribbons Nest -->
+            <g stroke="${isPesto ? '#7C9082' : '#E7C17A'}" stroke-width="9" stroke-linecap="round" fill="none">
+              <path d="M78 134c12-38 92-38 104 0" />
+              <path d="M84 148c18 32 74 32 92 0" />
+              <path d="M90 120c24-24 56-24 80 0" />
+              <path d="M88 138c28 18 56 18 84 0" />
+              <path d="M98 156c20 14 44 14 64 0" />
+            </g>
+
+            <!-- Blistered Sun-Gold Tomatoes -->
+            ${t.has('pasta_tomatoes') ? `
+              <g class="animate-pop-in">
+                <circle cx="104" cy="126" r="8" fill="#E05A3A" />
+                <circle cx="154" cy="130" r="8" fill="#E05A3A" />
+                <circle cx="126" cy="154" r="8" fill="#E05A3A" />
+              </g>
+            ` : ''}
+
+            <!-- Sautéed Mushrooms -->
+            ${t.has('pasta_mushrooms') ? `
+              <g class="animate-pop-in" fill="#8C735B">
+                <path d="M118 114c0-7 14-7 14 0h-4v5h-6v-5h-4z" />
+                <path d="M138 144c0-7 14-7 14 0h-4v5h-6v-5h-4z" />
+              </g>
+            ` : ''}
+
+            <!-- Parmigiano Shavings -->
+            ${t.has('parmesan') ? `
+              <g class="animate-pop-in" fill="#FFFDF7" stroke="#E8E2D5" stroke-width="1">
+                <rect x="110" y="132" width="14" height="7" rx="2" transform="rotate(-18 110 132)" />
+                <rect x="134" y="120" width="14" height="7" rx="2" transform="rotate(22 134 120)" />
+                <rect x="122" y="144" width="14" height="7" rx="2" transform="rotate(8 122 144)" />
+              </g>
+            ` : ''}
+
+            <!-- Toasted Pine Nuts -->
+            ${t.has('pine_nuts') ? `
+              <g class="animate-pop-in" fill="#D4A359">
+                <ellipse cx="102" cy="144" rx="4" ry="2.2" />
+                <ellipse cx="148" cy="118" rx="4" ry="2.2" />
+                <ellipse cx="132" cy="136" rx="4" ry="2.2" />
+              </g>
+            ` : ''}
+
+            <!-- Torn Sweet Basil Leaves -->
+            ${t.has('fresh_basil_pasta') ? `
+              <g class="animate-pop-in">
+                <path d="M124 124c8-8 20-4 22 4-9 4-18 2-22-4z" fill="#5F7464" />
+                <path d="M104 138c-6-6-2-16 6-16 3 7 0 13-6 16z" fill="#7C9082" />
+              </g>
+            ` : ''}
+          </svg>
+        `;
+      }
+    }
+
+    // 6. RENDER CUSTOMIZER UI CONTROLS
+    function renderCustomizer() {
+      const cat = getCurrentCategoryObj();
+      const base = getCurrentBaseObj();
+
+      // Render Base Selector Cards
+      baseSelectorContainer.innerHTML = cat.bases
+        .map((b) => {
+          const isSelected = b.id === base.id;
+          return `
+            <button type="button" data-base-id="${b.id}" class="base-select-btn text-left p-3.5 rounded-2xl border transition-all btn-tactile ${
+              isSelected
+                ? 'bg-sage-600 text-cream-50 border-sage-600 shadow-md shadow-sage-600/20'
+                : 'bg-cream-100/80 text-charcoal border-sage-200 hover:bg-sage-100'
+            }">
+              <div class="flex items-center justify-between gap-1">
+                <span class="font-semibold text-xs sm:text-sm leading-snug">${b.name}</span>
+              </div>
+              <span class="text-xs mt-1 block ${isSelected ? 'text-sage-100' : 'text-sage-700 font-semibold'}">${formatINR(b.price)}</span>
+            </button>
+          `;
+        })
+        .join('');
+
+      // Attach base click listeners
+      document.querySelectorAll('.base-select-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.selectedBaseId = btn.dataset.baseId;
+          renderCustomizer();
+        });
+      });
+
+      // Render Topping Groups with Dietary Dots
+      toppingGroupsContainer.innerHTML = cat.groups
+        .map(
+          (group) => `
+          <div>
+            <h4 class="text-xs font-bold uppercase tracking-wider text-sage-700 mb-3">${group.title}</h4>
+            <div class="grid sm:grid-cols-2 gap-3">
+              ${group.items
+                .map((item) => {
+                  const active = state.selectedToppings.has(item.id);
+                  const dotColor = item.veg ? 'sage-600' : 'terracotta';
+                  return `
+                    <button type="button" data-topping-id="${item.id}" class="topping-toggle-btn flex items-center justify-between p-3.5 rounded-2xl border text-left transition-all btn-tactile ${
+                      active
+                        ? 'bg-sage-100 border-sage-600 shadow-xs ring-1 ring-sage-600'
+                        : 'bg-cream-100/60 border-sage-200 hover:bg-cream-100'
+                    }">
+                      <div class="flex items-center gap-3">
+                        <span class="w-9 h-9 rounded-xl flex items-center justify-center text-lg shrink-0 ${
+                          active ? 'bg-sage-600 text-white' : 'bg-white border border-sage-200'
+                        }">${item.emoji}</span>
+                        <div>
+                          <div class="flex items-center gap-1.5">
+                            <span class="w-3 h-3 rounded-xs border border-${dotColor} flex items-center justify-center shrink-0" title="${item.veg ? 'Vegetarian' : 'Non-Vegetarian'}">
+                              <span class="w-1.5 h-1.5 rounded-full bg-${dotColor}"></span>
+                            </span>
+                            <p class="text-sm font-semibold text-charcoal leading-tight">${item.name}</p>
+                          </div>
+                          <p class="text-xs text-sage-700 mt-0.5">${
+                            item.price === 0 ? 'Included' : `+${formatINR(item.price)}`
+                          }</p>
+                        </div>
+                      </div>
+                      <span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
+                        active
+                          ? 'bg-sage-600 text-cream-50'
+                          : 'border border-sage-300 text-transparent'
+                      }">✓</span>
+                    </button>
+                  `;
+                })
+                .join('')}
+            </div>
+          </div>
+        `
+        )
+        .join('');
+
+      // Attach topping toggle listeners
+      document.querySelectorAll('.topping-toggle-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const id = btn.dataset.toppingId;
+          if (state.selectedToppings.has(id)) {
+            state.selectedToppings.delete(id);
+          } else {
+            state.selectedToppings.add(id);
+          }
+          renderCustomizer();
+        });
+      });
+
+      // Update Summary Header, Pills, Price & SVG
+      currentDishTitle.textContent = base.name;
+      currentDishDesc.textContent = base.desc;
+      currentDishPrice.textContent = formatINR(calculateCurrentPrice());
+      activeToppingCount.textContent = `${state.selectedToppings.size} selected`;
+
+      const allToppings = getAllToppingsInCategory();
+      const activeNames = [...state.selectedToppings]
+        .map((id) => allToppings.find((t) => t.id === id))
+        .filter(Boolean);
+
+      selectedPillsBar.innerHTML = activeNames.length
+        ? activeNames
+            .map(
+              (item) =>
+                `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white border border-sage-200 text-[11px] font-medium text-charcoal animate-pop-in">${item.emoji} ${item.name}</span>`
+            )
+            .join('')
+        : `<span class="text-xs text-charcoal/50 italic">No extra toppings selected — pure artisan base</span>`;
+
+      renderDishSVG();
+    }
+
+    // Switch Category Handler
+    function selectCategory(catKey) {
+      state.category = catKey;
+      const cat = MENU_DATA[catKey];
+      state.selectedBaseId = cat.bases[0].id;
+      state.selectedToppings = new Set(
+        cat.groups.flatMap((g) => g.items.filter((i) => i.default).map((i) => i.id))
+      );
+
+      categoryTabs.forEach((tab) => {
+        const isMatch = tab.dataset.category === catKey;
+        tab.className = isMatch
+          ? 'category-tab active flex items-center gap-2.5 px-5 sm:px-6 py-3 rounded-2xl text-sm font-semibold transition-all btn-tactile bg-sage-600 text-cream-50 shadow-md shadow-sage-600/20'
+          : 'category-tab flex items-center gap-2.5 px-5 sm:px-6 py-3 rounded-2xl text-sm font-semibold transition-all btn-tactile bg-cream-50 text-charcoal border border-sage-200 hover:bg-sage-100';
+      });
+
+      renderCustomizer();
+    }
+
+    categoryTabs.forEach((tab) => {
+      tab.addEventListener('click', () => selectCategory(tab.dataset.category));
+    });
+
+    // Reset Toppings Button
+    document.getElementById('reset-toppings-btn').addEventListener('click', () => {
+      selectCategory(state.category);
+      showToast('Reset to chef’s signature toppings');
+    });
+
+    // 7. TABLE ORDER CART MANAGEMENT
+    function renderCart() {
+      const container = document.getElementById('cart-items-container');
+      const badge = document.getElementById('cart-badge');
+      const totalQty = state.cart.reduce((sum, item) => sum + item.qty, 0);
+      badge.textContent = totalQty;
+
+      if (state.cart.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-16 space-y-3">
+            <p class="text-4xl">🌿</p>
+            <p class="font-serif text-xl font-bold text-charcoal">Your table ticket is empty</p>
+            <p class="text-xs text-charcoal/65 max-w-xs mx-auto">Customize a pizza, burger, coffee, or pasta on the menu to add it here.</p>
+          </div>
+        `;
+      } else {
+        container.innerHTML = state.cart
+          .map(
+            (item, idx) => `
+            <div class="p-4 rounded-2xl bg-cream-100 border border-sage-200 space-y-2">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <h4 class="font-serif text-lg font-bold text-charcoal leading-tight">${item.name}</h4>
+                  <p class="text-xs text-sage-700 mt-0.5">${
+                    item.toppings.length ? item.toppings.join(' • ') : 'Classic Base'
+                  }</p>
+                  ${item.note ? `<p class="text-[11px] italic text-terracotta mt-1">Note: "${item.note}"</p>` : ''}
+                </div>
+                <span class="font-bold text-sm text-charcoal">${formatINR(item.price * item.qty)}</span>
+              </div>
+              <div class="flex items-center justify-between pt-2 border-t border-sage-200/70">
+                <div class="inline-flex items-center gap-2 bg-cream-50 rounded-xl border border-sage-200 px-2 py-1">
+                  <button type="button" data-cart-idx="${idx}" data-delta="-1" class="cart-qty-btn w-6 h-6 rounded-lg hover:bg-sage-100 text-xs font-bold">−</button>
+                  <span class="text-xs font-bold px-1">${item.qty}</span>
+                  <button type="button" data-cart-idx="${idx}" data-delta="1" class="cart-qty-btn w-6 h-6 rounded-lg hover:bg-sage-100 text-xs font-bold">+</button>
+                </div>
+                <button type="button" data-remove-idx="${idx}" class="cart-remove-btn text-xs text-charcoal/55 hover:text-terracotta font-medium">Remove</button>
+              </div>
+            </div>
+          `
+          )
+          .join('');
+      }
+
+      const subtotal = state.cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+      const gst = Math.round(subtotal * 0.05);
+      const total = subtotal + gst;
+
+      document.getElementById('cart-subtotal').textContent = formatINR(subtotal);
+      document.getElementById('cart-tax').textContent = formatINR(gst);
+      document.getElementById('cart-total').textContent = formatINR(total);
+
+      // Attach cart item buttons
+      document.querySelectorAll('.cart-qty-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const idx = Number(btn.dataset.cartIdx);
+          const delta = Number(btn.dataset.delta);
+          state.cart[idx].qty += delta;
+          if (state.cart[idx].qty <= 0) state.cart.splice(idx, 1);
+          renderCart();
+        });
+      });
+
+      document.querySelectorAll('.cart-remove-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const idx = Number(btn.dataset.removeIdx);
+          state.cart.splice(idx, 1);
+          renderCart();
+        });
+      });
+    }
+
+    // Add Custom Dish to Cart
+    document.getElementById('add-to-order-btn').addEventListener('click', () => {
+      const base = getCurrentBaseObj();
+      const allToppings = getAllToppingsInCategory();
+      const toppingNames = [...state.selectedToppings]
+        .map((id) => allToppings.find((t) => t.id === id)?.name)
+        .filter(Boolean);
+      const note = chefNoteInput.value.trim();
+      const price = calculateCurrentPrice();
+
+      state.cart.push({
+        id: Date.now().toString(),
+        category: state.category,
+        name: base.name,
+        toppings: toppingNames,
+        note,
+        price,
+        qty: 1,
+      });
+
+      chefNoteInput.value = '';
+      renderCart();
+      showToast(`Added "${base.name}" to your table order!`);
+    });
+
+    // Cart Drawer Open / Close
+    const cartDrawerOverlay = document.getElementById('cart-drawer-overlay');
+    document.getElementById('open-cart-btn').addEventListener('click', () => {
+      cartDrawerOverlay.classList.remove('hidden');
+      cartDrawerOverlay.classList.add('flex');
+    });
+    document.getElementById('close-cart-btn').addEventListener('click', () => {
+      cartDrawerOverlay.classList.add('hidden');
+      cartDrawerOverlay.classList.remove('flex');
+    });
+    cartDrawerOverlay.addEventListener('click', (e) => {
+      if (e.target === cartDrawerOverlay) {
+        cartDrawerOverlay.classList.add('hidden');
+        cartDrawerOverlay.classList.remove('flex');
+      }
+    });
+
+    document.getElementById('place-order-btn').addEventListener('click', () => {
+      if (!state.cart.length) {
+        showToast('Add a custom dish first!');
+        return;
+      }
+      state.cart = [];
+      renderCart();
+      cartDrawerOverlay.classList.add('hidden');
+      cartDrawerOverlay.classList.remove('flex');
+      showToast('Order sent to The scilent pattern kitchen! 👨‍🍳');
+    });
+
+    // 8. INTERACTIVE FLOOR PLAN & RESERVATIONS
+    function renderFloorPlan() {
+      const grid = document.getElementById('floor-plan-grid');
+      grid.innerHTML = CAFE_TABLES.map((tbl) => {
+        const isSelected = tbl.id === state.selectedTableId;
+        let cardStyle = 'bg-cream-100/70 border-sage-200 text-charcoal cursor-pointer';
+        if (tbl.occupied) {
+          cardStyle = 'occupied bg-sage-200/50 border-sage-200 text-charcoal/45 cursor-not-allowed';
+        } else if (isSelected) {
+          cardStyle = 'bg-sage-600 border-sage-700 text-cream-50 shadow-lg shadow-sage-600/25 cursor-pointer';
+        }
+
+        return `
+          <button type="button" data-table-id="${tbl.id}" ${tbl.occupied ? 'disabled' : ''} class="cafe-table p-4 rounded-2xl border-2 text-left transition-all ${cardStyle}">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-md ${
+                isSelected ? 'bg-sage-700 text-cream-50' : 'bg-white/80 text-sage-800'
+              }">${tbl.id}</span>
+              <span class="text-[11px] font-semibold">${tbl.occupied ? 'Reserved' : tbl.seats}</span>
+            </div>
+            <p class="font-serif text-base font-bold leading-snug">${tbl.name}</p>
+            <p class="text-[11px] mt-0.5 ${isSelected ? 'text-sage-100' : 'text-charcoal/60'}">${tbl.zone}</p>
+          </button>
+        `;
+      }).join('');
+
+      document.querySelectorAll('.cafe-table:not(.occupied)').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.selectedTableId = btn.dataset.tableId;
+          const selectedObj = CAFE_TABLES.find((t) => t.id === state.selectedTableId);
+          document.getElementById('selected-table-name').textContent = `${selectedObj.id} • ${selectedObj.name}`;
+          document.getElementById('selected-table-seats').textContent = selectedObj.seats;
+          renderFloorPlan();
+        });
+      });
+    }
+
+    // Guest Count Pills
+    document.querySelectorAll('.guest-pill').forEach((pill) => {
+      pill.addEventListener('click', () => {
+        state.guestCount = pill.dataset.guests;
+        document.querySelectorAll('.guest-pill').forEach((p) => {
+          const active = p.dataset.guests === state.guestCount;
+          p.className = active
+            ? 'guest-pill active py-2.5 rounded-xl bg-sage-600 text-cream-50 text-sm font-semibold shadow-sm'
+            : 'guest-pill py-2.5 rounded-xl border border-sage-200 bg-cream-100 text-sm font-semibold text-charcoal hover:bg-sage-100';
+        });
+      });
+    });
+
+    // Set default date to today
+    const resDateInput = document.getElementById('res-date');
+    resDateInput.valueAsDate = new Date();
+
+    // Reservation Form Submission
+    const reservationForm = document.getElementById('reservation-form');
+    const reservationConfirmation = document.getElementById('reservation-confirmation');
+
+    reservationForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const guestName = document.getElementById('guest-name').value.trim() || 'Guest';
+      const dateVal = resDateInput.value;
+      const timeVal = document.getElementById('res-time').value;
+      const tableObj = CAFE_TABLES.find((t) => t.id === state.selectedTableId);
+
+      document.getElementById('confirm-heading').textContent = `Table Reserved for ${guestName}`;
+      document.getElementById('confirm-details').textContent =
+        `${tableObj.id} (${tableObj.name}) for ${state.guestCount} guest(s) on ${dateVal} at ${timeVal}.`;
+
+      reservationForm.classList.add('hidden');
+      reservationConfirmation.classList.remove('hidden');
+      showToast('Table reservation confirmed!');
+    });
+
+    document.getElementById('book-another-btn').addEventListener('click', () => {
+      reservationConfirmation.classList.add('hidden');
+      reservationForm.classList.remove('hidden');
+    });
+
+    // 9. QR CODE MODAL & WIFI COPY INTERACTION
+    const qrModal = document.getElementById('qr-modal');
+    const qrTrigger = document.getElementById('qr-card-trigger');
+
+    function openQrModal() {
+      qrModal.classList.remove('hidden');
+      qrModal.classList.add('flex');
+    }
+
+    function closeQrModal() {
+      qrModal.classList.add('hidden');
+      qrModal.classList.remove('flex');
+    }
+
+    qrTrigger.addEventListener('click', openQrModal);
+    qrTrigger.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openQrModal();
+      }
+    });
+    document.getElementById('close-qr-modal').addEventListener('click', closeQrModal);
+    qrModal.addEventListener('click', (e) => {
+      if (e.target === qrModal) closeQrModal();
+    });
+
+    // Copy Wi-Fi Password using reliable execCommand fallback
+    document.getElementById('copy-wifi-btn').addEventListener('click', () => {
+      const pass = document.getElementById('wifi-pass-text').textContent;
+      const tempInput = document.createElement('input');
+      tempInput.value = pass;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+      showToast('Wi-Fi key "quietpattern26" copied!');
+    });
+
+    // 10. TOAST NOTIFICATION & SCROLL REVEAL OBSERVER
+    let toastTimeout;
+    function showToast(msg) {
+      const banner = document.getElementById('toast-banner');
+      document.getElementById('toast-message').textContent = msg;
+      banner.classList.remove('opacity-0', 'translate-y-4');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        banner.classList.add('opacity-0', 'translate-y-4');
+      }, 2800);
+    }
+
+    // IntersectionObserver for smooth scroll-reveal animations
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+    // 11. INITIALIZE APP
+    renderCustomizer();
+    renderCart();
+    renderFloorPlan();
+  </script>
+</body>
+</html>
